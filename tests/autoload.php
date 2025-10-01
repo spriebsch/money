@@ -7,8 +7,8 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'spriebsch\\eventsourcing\\bankaccount\\tests\\currencytest' => '/CurrencyTest.php',
-                'spriebsch\\eventsourcing\\bankaccount\\tests\\moneytest' => '/MoneyTest.php'
+                'spriebsch\\money\\tests\\currencytest' => '/CurrencyTest.php',
+                'spriebsch\\money\\tests\\moneytest' => '/MoneyTest.php'
             );
         }
         $cn = strtolower($class);

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace spriebsch\eventSourcing\bankAccount;
+namespace spriebsch\money;
 
 enum Currency :string
 {

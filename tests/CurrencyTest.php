@@ -1,11 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace spriebsch\eventSourcing\bankAccount\tests;
+namespace spriebsch\money;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
-use spriebsch\eventSourcing\bankAccount\Currency;
 
 #[Small]
 #[CoversClass(Currency::class)]
