@@ -1,17 +1,16 @@
 {
-  "name": "spriebsch/project-template",
-  "description": "A minimal PHP project template",
-  "type": "project",
+  "name": "spriebsch/money",
+  "description": "The Money library for PHP",
+  "type": "library",
   "authors": [
     {
       "name": "Stefan Priebsch",
-      "email": "stefan@priebsch.de"
+      "email": "stefan@priebsch.de",
+      "homepage": "https://www.priebsch.de"
     }
   ],
   "require": {
     "php": ">=8.4"
-  },
-  "require-dev": {
   },
   "autoload": {
     "classmap": [
