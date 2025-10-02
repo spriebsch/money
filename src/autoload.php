@@ -7,7 +7,9 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
+                'spriebsch\\money\\amount' => '/Amount.php',
                 'spriebsch\\money\\currency' => '/Currency.php',
+                'spriebsch\\money\\fraction' => '/Fraction.php',
                 'spriebsch\\money\\money' => '/Money.php'
             );
         }

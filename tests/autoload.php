@@ -7,8 +7,10 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'spriebsch\\money\\tests\\currencytest' => '/CurrencyTest.php',
-                'spriebsch\\money\\tests\\moneytest' => '/MoneyTest.php'
+                'spriebsch\\money\\fractiontest' => '/FractionTest.php',
+                'spriebsch\\money\\moneytest' => '/MoneyTest.php',
+                'spriebsch\\money\\mycurrencytest' => '/MyCurrencyTest.php',
+                'spriebsch\\money\\testsupportedcurrencies' => '/TestSupportedCurrencies.php'
             );
         }
         $cn = strtolower($class);

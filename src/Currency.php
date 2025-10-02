@@ -2,8 +2,6 @@
 
 namespace spriebsch\money;
 
-enum Currency :string
+interface Currency
 {
-    case EUR = 'EUR';
-    case GBP = 'GBP';
 }

@@ -11,75 +11,82 @@ use RuntimeException;
 #[CoversClass(Money::class)]
 final class MoneyTest extends TestCase
 {
-    public function testItIsCreatedFromAmountAndCurrency(): void
+    public function test_has_amount_and_currency(): void
     {
-        $money = Money::from(1234, Currency::EUR);
+        $cents = 1234;
 
-        self::assertSame(1234, $money->amountInCents());
-        self::assertSame(Currency::EUR, $money->currency());
+        $money = Money::from(Amount::cents($cents), TestSupportedCurrencies::EUR);
+
+        $this->assertSame($cents, $money->amount()->fraction()->value());
+        $this->assertSame(100, $money->amount()->fraction()->fraction());
+        $this->assertSame(TestSupportedCurrencies::EUR, $money->currency());
     }
 
-    public function testAddReturnsNewInstanceWithSummedAmount(): void
+    public function test_adds_values_of_same_currency(): void
     {
-        $a = Money::from(100, Currency::EUR);
-        $b = Money::from(250, Currency::EUR);
+        $expected = Money::from(Amount::cents(350), TestSupportedCurrencies::EUR);
+
+        $a = Money::from(Amount::cents(100), TestSupportedCurrencies::EUR);
+        $b = Money::from(Amount::cents(250), TestSupportedCurrencies::EUR);
 
         $sum = $a->add($b);
 
-        self::assertSame(350, $sum->amountInCents());
-        self::assertSame(Currency::EUR, $sum->currency());
-        self::assertNotSame($a, $sum);
-        self::assertNotSame($b, $sum);
+        $this->assertTrue($expected->equals($sum));
+        $this->assertSame(TestSupportedCurrencies::EUR, $sum->currency());
+
+        $this->assertNotSame($a, $sum);
+        $this->assertNotSame($b, $sum);
     }
 
-    public function testSubtractReturnsNewInstanceWithSubtractedAmount(): void
+    public function test_subtracts_values_of_same_currency(): void
     {
-        $a = Money::from(1000, Currency::EUR);
-        $b = Money::from(250, Currency::EUR);
+        $expected = Money::from(Amount::cents(750), TestSupportedCurrencies::EUR);
+
+        $a = Money::from(Amount::cents(1000), TestSupportedCurrencies::EUR);
+        $b = Money::from(Amount::cents(250), TestSupportedCurrencies::EUR);
 
         $diff = $a->subtract($b);
 
-        self::assertSame(750, $diff->amountInCents());
-        self::assertSame(Currency::EUR, $diff->currency());
+        $this->assertTrue($expected->equals($diff));
+        $this->assertSame(TestSupportedCurrencies::EUR, $diff->currency());
+
+        $this->assertNotSame($a, $diff);
+        $this->assertNotSame($b, $diff);
     }
 
-    public function testEqualsIsTrueForSameAmountAndCurrency(): void
+    public function test_compares_values(): void
     {
-        $a = Money::from(500, Currency::GBP);
-        $b = Money::from(500, Currency::GBP);
+        $amount = random_int(500, 1000);
 
-        self::assertTrue($a->equals($b));
+        $a = Money::from(Amount::cents($amount), TestSupportedCurrencies::GBP);
+        $b = Money::from(Amount::cents($amount), TestSupportedCurrencies::GBP);
+        $c = Money::from(Amount::cents(300), TestSupportedCurrencies::GBP);
+        $d = Money::from(Amount::cents(300), TestSupportedCurrencies::EUR);
+
+        $this->assertTrue($a->equals($b));
+        $this->assertFalse($a->equals($c));
+        $this->assertFalse($a->equals($d));
     }
 
-    public function testEqualsIsFalseForDifferentAmount(): void
-    {
-        $a = Money::from(500, Currency::GBP);
-        $b = Money::from(600, Currency::GBP);
-
-        self::assertFalse($a->equals($b));
-    }
-
-    public function testEqualsIsFalseForDifferentCurrency(): void
-    {
-        $a = Money::from(500, Currency::GBP);
-        $b = Money::from(500, Currency::EUR);
-
-        self::assertFalse($a->equals($b));
-    }
-
-    public function testAddThrowsOnCurrencyMismatch(): void
+    public function test_will_not_add_different_currencies(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Currency mismatch');
 
-        Money::from(100, Currency::EUR)->add(Money::from(100, Currency::GBP));
+        $oneEuro = Money::from(Amount::cents(100), TestSupportedCurrencies::EUR);
+        $onePound = Money::from(Amount::cents(100), TestSupportedCurrencies::GBP);
+
+        $oneEuro->add($onePound);
     }
 
-    public function testSubtractThrowsOnCurrencyMismatch(): void
+    public function test_will_not_substract_different_currencies(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Currency mismatch');
 
-        Money::from(100, Currency::GBP)->subtract(Money::from(50, Currency::EUR));
+        $oneEuro = Money::from(Amount::cents(100), TestSupportedCurrencies::EUR);
+        $onePound = Money::from(Amount::cents(100), TestSupportedCurrencies::GBP);
+
+        $oneEuro->subtract($onePound);
     }
 }
